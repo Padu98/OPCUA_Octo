@@ -1,0 +1,292 @@
+<UANodeSet xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Aliases>
+    <Alias Alias="String">i=12</Alias>
+    <Alias Alias="Organizes">i=35</Alias>
+    <Alias Alias="HasTypeDefinition">i=40</Alias>
+    <Alias Alias="HasProperty">i=46</Alias>
+    <Alias Alias="HasComponent">i=47</Alias>
+    <Alias Alias="Argument">i=296</Alias>
+  </Aliases>
+  <UAObject NodeId="ns=1;i=2001" BrowseName="1:General_Information" ParentNodeId="i=85">
+    <DisplayName>General_Information</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2008</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2009</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2011</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;i=2002" BrowseName="1:Server_Information" ParentNodeId="i=85">
+    <DisplayName>ServerAndVersion_Info</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2012</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2013</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;i=2003" BrowseName="1:Connection_Handling" ParentNodeId="i=85">
+    <DisplayName>Connection_Handling</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2014</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2015</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2016</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;i=2004" BrowseName="1:File_Operations" ParentNodeId="i=85">
+    <DisplayName>File_Operations</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2017</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;i=2005" BrowseName="1:Job_Operations" ParentNodeId="i=85">
+    <DisplayName>Job_Operations</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2018</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2019</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2020</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2021</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2023</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2024</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;i=2006" BrowseName="1:Printer_Operations" ParentNodeId="i=85">
+    <DisplayName>Printer_Operations</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2025</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2026</Reference>
+    </References>
+  </UAObject>
+  <UAObject NodeId="ns=1;i=2007" BrowseName="1:Access_Control" ParentNodeId="i=85">
+    <DisplayName>Access_Control</DisplayName>
+    <References>
+      <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2030</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2031</Reference>
+    </References>
+  </UAObject>
+  <UAVariable NodeId="ns=1;i=2008" BrowseName="1:currentuser" ParentNodeId="ns=1;i=2001" DataType="String">
+    <DisplayName>currentuser</DisplayName>
+    <Description>currentuser</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2001</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no_user"</uax:String>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;i=2009" BrowseName="1:log_in" ParentNodeId="ns=1;i=2001">
+    <DisplayName>log_in</DisplayName>
+    <Description>log_in</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2001</Reference>
+      <Reference ReferenceType="HasProperty">ns=1;i=2010</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;i=2010" BrowseName="0:InputArguments" ParentNodeId="ns=1;i=2009" ValueRank="0" DataType="Argument">
+    <DisplayName>InputArguments</DisplayName>
+    <Description>InputArguments</Description>
+    <References>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=2009</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+    </References>
+    <Value>
+      <uax:ListOfExtensionObject>
+        <uax:ExtensionObject>
+          <uax:TypeId>
+            <uax:Identifier>i=296</uax:Identifier>
+          </uax:TypeId>
+          <uax:Body>
+            <uax:Argument>
+              <uax:Name />
+              <uax:DataType>
+                <uax:Identifier>i=12</uax:Identifier>
+              </uax:DataType>
+              <uax:ValueRank>-1</uax:ValueRank>
+              <uax:ArrayDimensions />
+              <uax:Description>
+                <uax:Encoding>0</uax:Encoding>
+                <uax:Locale />
+                <uax:Text />
+              </uax:Description>
+            </uax:Argument>
+          </uax:Body>
+        </uax:ExtensionObject>
+      </uax:ListOfExtensionObject>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;i=2011" BrowseName="1:log_out" ParentNodeId="ns=1;i=2001">
+    <DisplayName>log_out</DisplayName>
+    <Description>log_out</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2001</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;i=2012" BrowseName="1:Version_Information" ParentNodeId="ns=1;i=2002" DataType="String">
+    <DisplayName>Version_Information</DisplayName>
+    <Description>Version_Information</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2002</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no information"</uax:String>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;i=2013" BrowseName="1:Server_Information" ParentNodeId="ns=1;i=2002" DataType="String">
+    <DisplayName>Server_Information</DisplayName>
+    <Description>Server_Information</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2002</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no information"</uax:String>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;i=2014" BrowseName="1:Settings" ParentNodeId="ns=1;i=2003" DataType="String">
+    <DisplayName>Settings</DisplayName>
+    <Description>Settings</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2003</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no information"</uax:String>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;i=2015" BrowseName="1:connection_request" ParentNodeId="ns=1;i=2003">
+    <DisplayName>connection_request</DisplayName>
+    <Description>connection_request</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2003</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2016" BrowseName="1:disconnection_request" ParentNodeId="ns=1;i=2003">
+    <DisplayName>disconnection_request</DisplayName>
+    <Description>disconnection_request</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2003</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;i=2017" BrowseName="1:All_Files" ParentNodeId="ns=1;i=2004" DataType="String">
+    <DisplayName>All_Files</DisplayName>
+    <Description>All_Files</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2004</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>Null</uax:String>
+    </Value>
+  </UAVariable>
+  <UAMethod NodeId="ns=1;i=2018" BrowseName="1:start" ParentNodeId="ns=1;i=2005">
+    <DisplayName>start</DisplayName>
+    <Description>start</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2019" BrowseName="1:cancel" ParentNodeId="ns=1;i=2005">
+    <DisplayName>cancel</DisplayName>
+    <Description>cancel</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2020" BrowseName="1:restart" ParentNodeId="ns=1;i=2005">
+    <DisplayName>restart</DisplayName>
+    <Description>restart</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2021" BrowseName="1:pause" ParentNodeId="ns=1;i=2005">
+    <DisplayName>pause</DisplayName>
+    <Description>pause</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2023" BrowseName="1:resume" ParentNodeId="ns=1;i=2005">
+    <DisplayName>resume</DisplayName>
+    <Description>resume</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2024" BrowseName="1:currentJob" ParentNodeId="ns=1;i=2005">
+    <DisplayName>currentJob</DisplayName>
+    <Description>currentJob</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+    </References>
+  </UAMethod>
+  <UAVariable NodeId="ns=1;i=2025" BrowseName="1:Printer_State" ParentNodeId="ns=1;i=2006" DataType="String">
+    <DisplayName>Printer_State</DisplayName>
+    <Description>Printer_State</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2006</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no state"</uax:String>
+    </Value>
+  </UAVariable>
+  <UAObject NodeId="ns=1;i=2026" BrowseName="1:Printer_Head" ParentNodeId="ns=1;i=2006">
+    <DisplayName>Printer_Head</DisplayName>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2006</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2027</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2028</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2029</Reference>
+    </References>
+  </UAObject>
+  <UAMethod NodeId="ns=1;i=2027" BrowseName="1:jog" ParentNodeId="ns=1;i=2026">
+    <DisplayName>jog</DisplayName>
+    <Description>jog</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2026</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2028" BrowseName="1:home" ParentNodeId="ns=1;i=2026">
+    <DisplayName>home</DisplayName>
+    <Description>home</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2026</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2029" BrowseName="1:set_feed_rate" ParentNodeId="ns=1;i=2026">
+    <DisplayName>set_feed_rate</DisplayName>
+    <Description>set_feed_rate</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2026</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2030" BrowseName="1:addUser" ParentNodeId="ns=1;i=2007">
+    <DisplayName>addUser</DisplayName>
+    <Description>addUser</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2007</Reference>
+    </References>
+  </UAMethod>
+  <UAMethod NodeId="ns=1;i=2031" BrowseName="1:deleteUser" ParentNodeId="ns=1;i=2007">
+    <DisplayName>deleteUser</DisplayName>
+    <Description>deleteUser</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2007</Reference>
+    </References>
+  </UAMethod>
+</UANodeSet>
