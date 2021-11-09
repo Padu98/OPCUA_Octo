@@ -2,13 +2,28 @@
 from logging import root
 from opcua import ua, uamethod, Server
 import time
+import requests
+from threading import Thread
 
+api_key='' #Octoprint Application key
 
-import code
+class VarUpdater(Thread):
+    def __init__(self, var, requestString):
+        Thread.__init__(self)
+        self._stopev = False
+        self.var = var
+        self.requestString = requestString
 
-def embed():
-    myvars = globals()
-    myvars.update(locals())
+    def stop(self):
+        self._stopev = True
+
+    def run(self):
+        while not self._stopev:
+            headers = {'X-Api-Key' : api_key}
+            http_get_result = requests.get(self.requestString, headers=headers)
+            if http_get_result.status_code == 200:   #200 als string oder int
+                self.var.set_value(http_get_result)
+            time.sleep(10)
    
 
 @uamethod
@@ -119,6 +134,20 @@ if __name__ == '__main__':
 
     server.start()
 
+    vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
+    vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
+    vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
+    vup4 = VarUpdater(printerState, '')
+    vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
+    vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
+
+    vup1.start()
+    vup2.start()
+    vup3.start()
+    vup4.start()
+    vup5.start()
+    vup6.start()
+
     try:
         count = 0
         while True:
@@ -127,4 +156,10 @@ if __name__ == '__main__':
        # server.set_attribute_value(myvar.nodeid, ua.DataValue(9.9))  # Server side write method which is a but faster than using set_value
 
     finally:
+        vup1.stop()
+        vup2.stop()
+        vup3.stop()
+        vup4.stop()
+        vup5.stop()
+        vup6.stop()
         server.stop()
