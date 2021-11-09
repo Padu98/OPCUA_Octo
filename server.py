@@ -23,9 +23,9 @@ class VarUpdater(Thread):
             headers = {'X-Api-Key' : api_key}
             http_get_result = requests.get(self.requestString, headers=headers)
             if http_get_result.status_code == 200:   #200 als string oder int
-                self.var.set_value(http_get_result)
-                print("Request erfolgreich")
-            time.sleep(10)
+                self.var.set_value(http_get_result.text)  ##ergebnis im json format
+                print(http_get_result)
+            time.sleep(30)
    
 @uamethod
 def test():
