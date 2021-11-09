@@ -4,6 +4,7 @@ from opcua import ua, uamethod, Server
 import time
 import requests
 from threading import Thread
+from ua_methods import *
 
 api_key='' #Octoprint Application key
 
@@ -23,17 +24,14 @@ class VarUpdater(Thread):
             http_get_result = requests.get(self.requestString, headers=headers)
             if http_get_result.status_code == 200:   #200 als string oder int
                 self.var.set_value(http_get_result)
+                print("Request erfolgreich")
             time.sleep(10)
    
-
 @uamethod
 def test():
     print("Calling say_hello_xml")
     result = "das ist ein Test"
     return result
-
-
-
 
 model_filepath = "opcuaServer.xml"
 
@@ -69,18 +67,18 @@ if __name__ == '__main__':
     ##################################################Funktionen initialisieren
     addUser = accessControl.get_child('1:addUser')
     deleteUser = accessControl.get_child('1:deleteUser')
-    server.link_method(addUser, test)
-    server.link_method(deleteUser, test)
+    server.link_method(addUser, add_user)
+    server.link_method(deleteUser, del_user)
 
     connect = connectionHandling.get_child('1:connection_request')
     disconnect = connectionHandling.get_child('1:disconnection_request')
-    server.link_method(connect, test)
-    server.link_method(disconnect, test)
+    server.link_method(connect, con)
+    server.link_method(disconnect, discon)
 
     logIn = generalInfos.get_child('1:log_in')
     logOut = generalInfos.get_child('1:log_out')
-    server.link_method(logIn, test)
-    server.link_method(logOut, test)
+    server.link_method(logIn, log_in)
+    server.link_method(logOut, Log_out)
 
     start = JobOperations.get_child('1:start')
     cancel = JobOperations.get_child('1:cancel')
@@ -88,20 +86,20 @@ if __name__ == '__main__':
     restart = JobOperations.get_child('1:restart')
     resume = JobOperations.get_child('1:resume')
     getCurrentJob = JobOperations.get_child('1:currentJob')
-    server.link_method(start, test)
-    server.link_method(cancel, test)
-    server.link_method(pause, test)
-    server.link_method(restart, test)
-    server.link_method(resume, test)
-    server.link_method(getCurrentJob, test)
+    server.link_method(start, start_job)
+    server.link_method(cancel, cancel_job)
+    server.link_method(pause, pause_job)
+    server.link_method(restart, restart_job)
+    server.link_method(resume, resume_job)
+    server.link_method(getCurrentJob, test)          #################* muss noch angepasst werden
 
     printerHead = printerOperations.get_child('1:Printer_Head')
     home = printerHead.get_child('1:home')
     jog = printerHead.get_child('1:jog')
     setFeedRate = printerHead.get_child('1:set_feed_rate')
-    server.link_method(home, test)
-    server.link_method(jog, test)
-    server.link_method(setFeedRate, test)
+    server.link_method(home, home_head)
+    server.link_method(jog, move_head)
+    server.link_method(setFeedRate, set_feedrate_head)
 
     ##################################################Funktionen initialisieren ende
 
@@ -129,37 +127,32 @@ if __name__ == '__main__':
 
     ##################################################werte initialisieren ende
 
-
-    #embed()
-
     server.start()
 
     vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
-    vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
-    vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
-    vup4 = VarUpdater(printerState, '')
-    vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
-    vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
+    #vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
+    #vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
+    #vup4 = VarUpdater(printerState, '')
+    #vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
+    #vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
 
     vup1.start()
-    vup2.start()
-    vup3.start()
-    vup4.start()
-    vup5.start()
-    vup6.start()
+    #vup2.start()
+    #vup3.start()
+    #vup4.start()
+    #vup5.start()
+    #vup6.start()
 
     try:
-        count = 0
+        print('Server Start')
         while True:
-            time.sleep(1)
-            count+=0.1
+            True
        # server.set_attribute_value(myvar.nodeid, ua.DataValue(9.9))  # Server side write method which is a but faster than using set_value
-
     finally:
         vup1.stop()
-        vup2.stop()
-        vup3.stop()
-        vup4.stop()
-        vup5.stop()
-        vup6.stop()
+        #vup2.stop()
+        #vup3.stop()
+        #vup4.stop()
+        #vup5.stop()
+        #vup6.stop()
         server.stop()
