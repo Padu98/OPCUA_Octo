@@ -1,6 +1,7 @@
 from opcua import Client
 from opcua import ua
 
+apiKey = ''
 
 if __name__ == "__main__":
     #logging.basicConfig(level=logging.WARN)
@@ -17,10 +18,10 @@ if __name__ == "__main__":
         objects = client.get_objects_node()  #con server???
         print("Objects node is: ", objects)
 
-        connectionHandling = objects.get_child('1:Connection_Handling')
+        connectionHandling = objects.get_child('1:General_Information')
         print()
 
-        res = connectionHandling.call_method('1:connection_request', 23)
+        res = connectionHandling.call_method('1:log_out', apiKey)
         print(res)
 
 

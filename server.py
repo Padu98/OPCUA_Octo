@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
     connect = connectionHandling.get_child('1:connection_request')
     disconnect = connectionHandling.get_child('1:disconnection_request')
-    server.link_method(connect, test)           #eigentlich con
+    server.link_method(connect, con)           
     server.link_method(disconnect, discon)
 
     logIn = generalInfos.get_child('1:log_in')
