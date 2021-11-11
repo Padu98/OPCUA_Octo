@@ -1,13 +1,13 @@
 from opcua import Client
 from opcua import ua
 
-apiKey = ''
+apiKey = '0212974DC0324BC6A437ACD87FDB772B'
 
 if __name__ == "__main__":
     #logging.basicConfig(level=logging.WARN)
  
 
-    client = Client("opc.tcp://localhost:4840/Octoprint")
+    client = Client("opc.tcp://192.168.2.140:4840/Octoprint")
 
     try:
         client.connect()
