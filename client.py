@@ -18,11 +18,16 @@ if __name__ == "__main__":
         objects = client.get_objects_node()  #con server???
         print("Objects node is: ", objects)
 
+        accessControl = objects.get_child('1:Access_Control')
         connectionHandling = objects.get_child('1:General_Information')
         print()
 
-        res = connectionHandling.call_method('1:log_out', apiKey)
+        res = accessControl.call_method('1:addUser', apiKey, 'test', 'chelsea', True, True)
         print(res)
+        res = connectionHandling.call_method('1:log_in', apiKey, 'test', 'chelsea')  
+        print(res)
+        #res = accessControl.call_method('1:deleteUser', apiKey, 'test')
+        #print(res)
 
 
 

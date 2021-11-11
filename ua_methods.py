@@ -11,14 +11,14 @@ def add_user(parent, api_key, username, passw, active, admin):
             'password' : passw,
             'active' : active,
             'admin' : admin}
-    requestString = 'http://localhost:5000/api/users/' 
+    requestString = 'http://localhost:5000/api/access/users' 
     http_get_result = requests.put(requestString, headers=headers, data=data)
     print(http_get_result)
 @uamethod
 def del_user(parent, api_key, username):
     headers = {'X-Api-Key' : api_key}
    # data = {'app' : 'aaaaa'}
-    requestString = 'http://localhost:5000/api/' + username
+    requestString = 'http://localhost:5000/api/access/' + username
     http_get_result = requests.delete(requestString, headers=headers)
     print(http_get_result)
 
@@ -34,7 +34,6 @@ def con(parent, api_key):
             'autoconnect' : True}
     requestString = 'http://localhost:5000/api/connection'
     http_get_result = requests.post(requestString, headers=headers, data=data)
-    print("Calling log_in")
     print(http_get_result)
 @uamethod
 def discon(parent, api_key):
@@ -42,7 +41,6 @@ def discon(parent, api_key):
     data = {'command' : 'disconnect'}
     requestString = 'http://localhost:5000/api/connection'
     http_get_result = requests.post(requestString, headers=headers, data=data)
-    print("Calling log_in")
     print(http_get_result)
 
 ######################### general information 
