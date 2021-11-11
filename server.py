@@ -1,7 +1,5 @@
-#from datetime import time
-from logging import root
-from opcua import ua, uamethod, Server
-import time
+from opcua import ua, uamethod, server
+import time 
 import requests
 from threading import Thread
 from ua_methods import *
@@ -28,22 +26,20 @@ class VarUpdater(Thread):
             time.sleep(30)
    
 @uamethod
-def test():
-    print("Calling say_hello_xml")
-    result = "das ist ein Test"
-    return result
+def test(value):
+    print("das ist ein Test")
+    return value
 
 model_filepath = "opcuaServer.xml"
 
 
 if __name__ == '__main__':
     server = Server()
-    server.set_endpoint("opc.tcp://0.0.0.0:4840/freeopcua/Octoprint")
+    server.set_endpoint("opc.tcp://0.0.0.0:4840/Octoprint")
     server.set_server_name("Octoprint")
 
     server.import_xml(model_filepath)
 
-    #server.start()
 
     server.set_security_policy([
                 ua.SecurityPolicyType.NoSecurity,
@@ -72,7 +68,7 @@ if __name__ == '__main__':
 
     connect = connectionHandling.get_child('1:connection_request')
     disconnect = connectionHandling.get_child('1:disconnection_request')
-    server.link_method(connect, con)
+    server.link_method(connect, test)           #eigentlich con
     server.link_method(disconnect, discon)
 
     logIn = generalInfos.get_child('1:log_in')
@@ -101,7 +97,6 @@ if __name__ == '__main__':
     server.link_method(jog, move_head)
     server.link_method(setFeedRate, set_feedrate_head)
 
-    ##################################################Funktionen initialisieren ende
 
     ##################################################werte initialisieren
 
@@ -129,14 +124,14 @@ if __name__ == '__main__':
 
     server.start()
 
-    vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
+    #vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
     #vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
     #vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
     #vup4 = VarUpdater(printerState, '')
     #vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
     #vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
 
-    vup1.start()
+    #vup1.start()
     #vup2.start()
     #vup3.start()
     #vup4.start()
@@ -149,7 +144,7 @@ if __name__ == '__main__':
             True
        # server.set_attribute_value(myvar.nodeid, ua.DataValue(9.9))  # Server side write method which is a but faster than using set_value
     finally:
-        vup1.stop()
+        #vup1.stop()
         #vup2.stop()
         #vup3.stop()
         #vup4.stop()
