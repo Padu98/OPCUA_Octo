@@ -1,7 +1,7 @@
 from opcua import Client
 from opcua import ua
 
-apiKey = '0212974DC0324BC6A437ACD87FDB772B'
+apiKey = ''
 
 if __name__ == "__main__":
     #logging.basicConfig(level=logging.WARN)
