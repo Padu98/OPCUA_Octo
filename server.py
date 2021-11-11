@@ -26,7 +26,7 @@ class VarUpdater(Thread):
             time.sleep(30)
    
 @uamethod
-def test(value):
+def test(parent, value):
     print("das ist ein Test")
     return value
 
