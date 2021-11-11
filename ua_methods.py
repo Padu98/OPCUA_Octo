@@ -1,5 +1,6 @@
 from opcua import ua, uamethod, Server
 import requests
+import json
 
 
 ########################## adcess control
@@ -14,13 +15,14 @@ def add_user(parent, api_key, username, passw, active, admin):
     requestString = 'http://localhost:5000/api/access/users' 
     print('calling add_user with data:')
     print(data)
+    print(api_key)
     http_get_result = requests.post(requestString, headers=headers, data=data)
     print(http_get_result)
 
 @uamethod
 def del_user(parent, api_key, username):
     headers = {'X-Api-Key' : api_key}
-    requestString = 'http://localhost:5000/api/access/' + username
+    requestString = 'http://localhost:5000/api/access/users/' + username
     http_get_result = requests.delete(requestString, headers=headers)
     print(http_get_result)
 
@@ -34,8 +36,9 @@ def con(parent, api_key):
             'printerProfile': '',
             'save': True,
             'autoconnect' : True}
+    jsonData = json.dumps(data)
     requestString = 'http://localhost:5000/api/connection'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, data=jsonData)
     print(http_get_result)
 @uamethod
 def discon(parent, api_key):
