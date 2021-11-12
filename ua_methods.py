@@ -2,12 +2,11 @@ from opcua import ua, uamethod, Server
 import requests
 import json
 
-
 ########################## adcess control
 
 @uamethod
 def add_user(parent, api_key, username, passw, active, admin):
-    headers = {'X-Api-Key' : api_key}
+    headers = {'Authorization' : 'Bearer '+api_key}
     data = {'name' : username,
             'password' : passw,
             'active' : active,
@@ -36,9 +35,8 @@ def con(parent, api_key):
             'printerProfile': '',
             'save': True,
             'autoconnect' : True}
-    jsonData = json.dumps(data)
     requestString = 'http://localhost:5000/api/connection'
-    http_get_result = requests.post(requestString, headers=headers, data=jsonData)
+    http_get_result = requests.post(requestString, headers=headers, data=data)
     print(http_get_result)
 @uamethod
 def discon(parent, api_key):
