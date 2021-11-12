@@ -1,21 +1,18 @@
 from opcua import ua, uamethod, Server
 import requests
-import json
+
 
 ########################## adcess control
 
 @uamethod
 def add_user(parent, api_key, username, passw, active, admin):
-    headers = {'Authorization' : 'Bearer '+api_key}
+    headers = {'X-Api-Key' : api_key}
     data = {'name' : username,
             'password' : passw,
             'active' : active,
             'admin' : admin}
     requestString = 'http://localhost:5000/api/access/users' 
-    print('calling add_user with data:')
-    print(data)
-    print(api_key)
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 
 @uamethod
@@ -36,14 +33,14 @@ def con(parent, api_key):
             'save': True,
             'autoconnect' : True}
     requestString = 'http://localhost:5000/api/connection'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def discon(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'disconnect'}
     requestString = 'http://localhost:5000/api/connection'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 
 ######################### general information 
@@ -53,9 +50,9 @@ def log_in(parent, api_key, user, passw):
     headers = {'X-Api-Key' : api_key}
     data = { 'user' : user,
              'pass' : passw,
-             'remember' : True}            ###not sure if parameter is set correct
+             'remember' : True}          
     requestString = 'http://localhost:5000/api/login'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def Log_out(parent, api_key):
@@ -73,35 +70,35 @@ def start_job(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'start'}
     requestString = 'http://localhost:5000/api/job'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def cancel_job(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'cancel'}
     requestString = 'http://localhost:5000/api/job'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def restart_job(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'restart'}
     requestString = 'http://localhost:5000/api/job'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def resume_job(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'pause', 'action' : 'resume'}
     requestString = 'http://localhost:5000/api/job'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def pause_job(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'pause', 'action' : 'pause'}
     requestString = 'http://localhost:5000/api/job'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 
 #########################job Operations
@@ -113,7 +110,7 @@ def home_head(parent, api_key):
     headers = {'X-Api-Key' : api_key}
     data = {'command' : 'home', 'axes' : ['x', 'y']}
     requestString = 'http://localhost:5000/api/printhead'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def move_head(parent, api_key, x, y, z):
@@ -123,12 +120,12 @@ def move_head(parent, api_key, x, y, z):
             'y' : y, 
             'z' : z}
     requestString = 'http://localhost:5000/api/printhead'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
 @uamethod
 def set_feedrate_head(parent, api_key, n):
     data = {'command' : 'feedrate', 'factor' : n}
     headers = {'X-Api-Key' : api_key}
     requestString = 'http://localhost:5000/api/printhead'
-    http_get_result = requests.post(requestString, headers=headers, data=data)
+    http_get_result = requests.post(requestString, headers=headers, json=data)
     print(http_get_result)
