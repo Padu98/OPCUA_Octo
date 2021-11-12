@@ -16,7 +16,7 @@ if __name__ == "__main__":
         client.connect()
         client.load_type_definitions()
 
-        apiKey = '0212974DC0324BC6A437ACD87FDB772B'
+        apiKey = ''
 
         root = client.get_root_node()
         print("Root node is: ", root)
