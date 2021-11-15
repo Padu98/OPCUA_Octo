@@ -11,9 +11,14 @@ if __name__ == "__main__":
  
 
     client = Client("opc.tcp://192.168.2.140:4840/Octoprint")
+    client.load_private_key('certs/private_key_client.pem')
+   # client.set_security_string
+   
 
     try:
+        print('still alive')
         client.connect()
+        print('still alive')
         client.load_type_definitions()
 
         apiKey = ''

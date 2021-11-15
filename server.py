@@ -1,5 +1,6 @@
 from opcua import ua, uamethod, server
-import time 
+import time
+from opcua.ua.uaprotocol_auto import UserNameIdentityToken 
 import requests
 from threading import Thread
 from ua_methods import *
@@ -20,8 +21,8 @@ class VarUpdater(Thread):
         while not self._stopev:
             headers = {'X-Api-Key' : api_key}
             http_get_result = requests.get(self.requestString, headers=headers)
-            if http_get_result.status_code == 200:   #200 als string oder int
-                self.var.set_value(http_get_result.text)  ##ergebnis im json format
+            if http_get_result.status_code == 200:   
+                self.var.set_value(http_get_result.text) 
                 print(http_get_result)
             time.sleep(30)
    
@@ -40,11 +41,18 @@ if __name__ == '__main__':
 
     server.import_xml(model_filepath)
 
+    #server.set_se
+
 
     server.set_security_policy([
-                ua.SecurityPolicyType.NoSecurity,
+              
                 ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
                 ua.SecurityPolicyType.Basic256Sha256_Sign])
+
+    server.set_security_IDs(policyIDs=['Basic256Sha256', 'UserName'])
+    server.load_private_key('certs/server_private_key.pem')
+    server.load_certificate('certs/client_certificate.pem')
+
 
 
     nodes = server.get_objects_node()
@@ -124,19 +132,19 @@ if __name__ == '__main__':
 
     server.start()
 
-    #vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
-    #vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
-    #vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
+    vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
+    vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
+    vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
     #vup4 = VarUpdater(printerState, '')
-    #vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
-    #vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
+    vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
+    vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
 
-    #vup1.start()
-    #vup2.start()
-    #vup3.start()
+    vup1.start()
+    vup2.start()
+    vup3.start()
     #vup4.start()
-    #vup5.start()
-    #vup6.start()
+    vup5.start()
+    vup6.start()
 
     try:
         print('Server Start')
@@ -144,10 +152,10 @@ if __name__ == '__main__':
             True
        # server.set_attribute_value(myvar.nodeid, ua.DataValue(9.9))  # Server side write method which is a but faster than using set_value
     finally:
-        #vup1.stop()
-        #vup2.stop()
-        #vup3.stop()
-        #vup4.stop()
-        #vup5.stop()
-        #vup6.stop()
+        vup1.stop()
+        vup2.stop()
+        vup3.stop()
+       # vup4.stop()
+        vup5.stop()
+        vup6.stop()
         server.stop()
