@@ -52,6 +52,7 @@ if __name__ == '__main__':
     server.set_security_IDs(policyIDs=['Basic256Sha256', 'UserName'])
     server.load_private_key('certs/server_private_key.pem')
     server.load_certificate('certs/client_certificate.pem')
+   
 
 
 
