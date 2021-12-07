@@ -14,27 +14,34 @@ from asyncua.server.users import UserRole
 from asyncua.server.user_managers import CertificateUserManager
 
 
-api_key='' #Octoprint Application key
+api_key='0212974DC0324BC6A437ACD87FDB772B' #Octoprint Application key
+
+async def var_update(var, requestString):
+    headers = {'X-Api-Key' : api_key}
+    http_get_result = requests.get(requestString, headers=headers)
+    if http_get_result.status_code == 200:
+        await var.set_value(http_get_result.text)
+        print(http_get_result)
 
 
-class VarUpdater(Thread):
-    def __init__(self, var, requestString):
-        Thread.__init__(self)
-        self._stopev = False
-        self.var = var
-        self.requestString = requestString
 
-    def stop(self):
-        self._stopev = True
+#class VarUpdater(Thread):
+#    def __init__(self, var, requestString):
+#       	Thread.__init__(self)
+#       	self._stopev = False
+#       	self.var = var
+#       	self.requestString = requestString
 
-    def run(self):
-        while not self._stopev:
-            headers = {'X-Api-Key' : api_key}
-            http_get_result = requests.get(self.requestString, headers=headers)
-            if http_get_result.status_code == 200:   
-                self.var.set_value(http_get_result.text) 
-                print(http_get_result)
-            time.sleep(30)
+#    def stop(self):
+#       	self._stopev = True
+
+#    async def run(self):
+#       	while not self._stopev:
+#           headers = {'X-Api-Key' : api_key}
+#           http_get_result = requests.get(self.requestString, headers=headers)
+#           if http_get_result.status_code == 200:   
+#               await self.var.set_value(http_get_result.text) 
+#           time.sleep(15)
 
 
 @uamethod
@@ -42,18 +49,19 @@ def test(parent):
     print('hallo das ist ein test')
    
 
-model_filepath = "opcuaServer.xml"
+model_filepath = 'opcuaServer.xml'
 
 
 async def main():
     cert_user_manager = CertificateUserManager()
-    await cert_user_manager.add_user("certs/client_certificate.pem", name='test_user')
+    await cert_user_manager.add_user('certs/client_certificate.pem', name='test_user')
+    await cert_user_manager.add_user('certs/opcua_publisher_certificate.der', name='publisher')
 
     server = Server(user_manager = cert_user_manager)
     await server.init()
 
-    server.set_endpoint("opc.tcp://0.0.0.0:4840/Octoprint")
-    server.set_server_name("Octoprint")
+    server.set_endpoint('opc.tcp://0.0.0.0:4840/Octoprint')
+    server.set_server_name('Octoprint')
 
     server.set_security_policy([
                 ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
@@ -134,32 +142,32 @@ async def main():
     await printerState.set_read_only()
     await serverInfos.set_value('uninitialized')
     await serverInfos.set_read_only()
-    await versionInfos.set_value('uninitialized')
+    await versionInfos.set_value(1998.0)
     await versionInfos.set_read_only()
 
     ##################################################werte initialisieren ende
 
-  #  server.start()
 
    # vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
    # vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
    # vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
-   # #vup4 = VarUpdater(printerState, '')
+   # vup4 = VarUpdater(printerState, 'http://localhost:5000/api/printer?history=false')
    # vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
    # vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
 
     #vup1.start()
     #vup2.start()
     #vup3.start()
-    #vup4.start()
+   # vup4.start()
     #vup5.start()
     #vup6.start()
 
     async with server:
         print('server start')
         while True:
-            await asyncio.sleep(25)
-            print('alive')
+            await asyncio.sleep(30)
+#            await var_update(printerState, 'http://localhost:5000/api/printer?history=false')
+            await var_update(currentUser, 'http://localhost:5000/api/currentuser')
 
 
 

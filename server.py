@@ -4,8 +4,17 @@ from opcua.ua.uaprotocol_auto import UserNameIdentityToken
 import requests
 from threading import Thread
 from ua_methods import *
+from opcua.server.user_manager import UserManager
 
 api_key='' #Octoprint Application key
+
+users_db = {
+    'user1': 'pw1'
+}
+
+def user_manager(isession, username, password):
+    isession.user = UserManager.User
+    return username in users_db and password == users_db[username]
 
 class VarUpdater(Thread):
     def __init__(self, var, requestString):
@@ -41,21 +50,20 @@ if __name__ == '__main__':
 
     server.import_xml(model_filepath)
 
-    #server.set_se
 
+    server.load_private_key('certs/key.pem')   
+    server.load_certificate('certs/certificate.pem')
 
     server.set_security_policy([
-              
+#                ua.UserTokenType.Anonymous,
+#                ua.SecurityPolicyType.NoSecurity,
                 ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
                 ua.SecurityPolicyType.Basic256Sha256_Sign])
-
-    server.set_security_IDs(policyIDs=['Basic256Sha256', 'UserName'])
-    server.load_private_key('certs/server_private_key.pem')
-    server.load_certificate('certs/client_certificate.pem')
    
-
-
-
+    policyIds = ['Username', 'Basic256Sha256']
+    server.set_security_IDs(policyIds)
+    server.user_manager.set_user_manager(user_manager) 
+   
     nodes = server.get_objects_node()
 
 
@@ -124,7 +132,7 @@ if __name__ == '__main__':
     currentUser.set_read_only()
     printerState.set_value('uninitialized')
     printerState.set_read_only()
-    serverInfos.set_value('uninitialized')
+    serverInfos.set_value(22.0)
     serverInfos.set_read_only()
     versionInfos.set_value('uninitialized')
     versionInfos.set_read_only()
@@ -137,14 +145,14 @@ if __name__ == '__main__':
     vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
     vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
     #vup4 = VarUpdater(printerState, '')
-    vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
+#    vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
     vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
 
     vup1.start()
     vup2.start()
     vup3.start()
     #vup4.start()
-    vup5.start()
+ #   vup5.start()
     vup6.start()
 
     try:
@@ -157,6 +165,6 @@ if __name__ == '__main__':
         vup2.stop()
         vup3.stop()
        # vup4.stop()
-        vup5.stop()
+  #      vup5.stop()
         vup6.stop()
         server.stop()

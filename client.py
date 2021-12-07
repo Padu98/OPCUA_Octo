@@ -7,20 +7,18 @@ import json
 
 
 if __name__ == "__main__":
-    #logging.basicConfig(level=logging.WARN)
- 
+
 
     client = Client("opc.tcp://192.168.2.140:4840/Octoprint")
-    #client.set
-
     client.set_security_string("Basic256Sha256,SignAndEncrypt,certs/client_certificate.pem,certs/private_key_client.pem")
-    #client.set_security_string("Basic256Sha256,SignAndEncrypt,certs/server_certificate.pem,certs/server_private_key.pem")
 
-   # client.load_private_key('certs/private_key_client.pem')
+
+#    client.set_user('user1')
+#    client.set_password('pw12')
 
     print("success")
     input('Press Enter to continue ... ')
-   
+
 
     try:
         print('still alive')
@@ -37,14 +35,25 @@ if __name__ == "__main__":
 
         accessControl = objects.get_child('1:Access_Control')
         connectionHandling = objects.get_child('1:General_Information')
+        serverInformation = objects.get_child('1:Server_Information')
 
-        res = accessControl.call_method('1:addUser', apiKey, 'philipp', 'chelsea', True,  True)
-        print(res)
-        res = connectionHandling.call_method('1:log_in', apiKey, 'philipp', 'chelsea')  
-        print(res)
-        res = accessControl.call_method('1:deleteUser', apiKey, 'philipp')
-        print(res)
+        result = serverInformation.get_child('1:Server_Information')
+        print(result.get_value())
+#        res = accessControl.call_method('1:addUser', apiKey, 'philipp', 'chelsea', True,  True)
+#        print(res)
+#        res = connectionHandling.call_method('1:log_in', apiKey, 'philipp', 'chelsea')
+#        print(res)
+#        res = accessControl.call_method('1:deleteUser', apiKey, 'philipp')
+#        print(res)
 
     finally:
        client.disconnect()
+
+
+
+
+
+   
+
+
      

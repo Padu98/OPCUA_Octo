@@ -133,7 +133,7 @@
       <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2001</Reference>
     </References>
   </UAMethod>
-  <UAVariable NodeId="ns=1;i=2012" BrowseName="1:Version_Information" ParentNodeId="ns=1;i=2002" DataType="String">
+  <UAVariable NodeId="ns=1;i=2012" BrowseName="1:Version_Information" ParentNodeId="ns=1;i=2002" DataType="Double">
     <DisplayName>Version_Information</DisplayName>
     <Description>Version_Information</Description>
     <References>
@@ -141,7 +141,7 @@
       <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
     </References>
     <Value>
-      <uax:String>"no information"</uax:String>
+      <uax:Double>22</uax:Double>
     </Value>
   </UAVariable>
   <UAVariable NodeId="ns=1;i=2013" BrowseName="1:Server_Information" ParentNodeId="ns=1;i=2002" DataType="String">
