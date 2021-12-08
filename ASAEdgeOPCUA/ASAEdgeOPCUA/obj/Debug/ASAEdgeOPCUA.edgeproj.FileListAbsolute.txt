@@ -1,0 +1,3 @@
+C:\Users\pampa\Documents\ASAEdgeOPCUA\ASAEdgeOPCUA\obj\Debug\ASAEdgeOPCUA.edgeproj.CoreCompileInputs.cache
+C:\Users\pampa\Documents\ASAEdgeOPCUA\ASAEdgeOPCUA\bin\Debug\ASAEdgeOPCUA
+C:\Users\pampa\Documents\ASAEdgeOPCUA\ASAEdgeOPCUA\obj\Debug\ASAEdgeOPCUA

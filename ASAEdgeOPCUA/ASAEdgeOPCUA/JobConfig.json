@@ -1,0 +1,26 @@
+﻿{
+  "ScriptType": "JobConfig",
+  "DataLocale": "en-US",
+  "OutputErrorPolicy": "Drop",
+  "EventsLateArrivalMaxDelayInSeconds": 5,
+  "EventsOutOfOrderMaxDelayInSeconds": 0,
+  "EventsOutOfOrderPolicy": "Adjust",
+  "StreamingUnits": 3,
+  "CompatibilityLevel": "1.2",
+  "UseSystemAssignedIdentity": false,
+  "GlobalStorage": {
+    "AccountName": "storage533vpf",
+    "AccountKey": null,
+    "AuthenticationMode": "ConnectionString"
+  },
+  "CustomCodeStorage": {
+    "AccountName": "storage533vpf",
+    "AccountKey": null,
+    "ContainerName": "edgejob1",
+    "Path": "UserCustomCode.zip"
+  },
+  "ContentStoragePolicy": "SystemAccount",
+  "UploadFromLocal": true,
+  "DataSourceCredentialDomain": "4ab86969-e1f7-4c70-9b31-51fa15ce6934.StreamAnalystics",
+  "Tags": {}
+}
