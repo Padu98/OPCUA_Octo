@@ -1,7 +1,5 @@
 ﻿SELECT 
-    udf.ASAEdgeOPCUA_Class1_GetValue(getarrayelement(Messages, 0).Payload) AS restResult,
-    udf.ASAEdgeOPCUA_Class1_GetTimeStamp(getarrayelement(Messages, 0).Payload) As Tstamp,    
-    MessageType AS MessageType
+    udf.ASAEdgeOPCUA_Class1_GetValue(getarrayelement(Messages, 0).Payload) AS OPCUANodes
     
     
 INTO EdgeOutput
