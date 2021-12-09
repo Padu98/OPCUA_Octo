@@ -64,6 +64,7 @@
       <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2025</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2026</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=3000</Reference>
     </References>
   </UAObject>
   <UAObject NodeId="ns=1;i=2007" BrowseName="1:Access_Control" ParentNodeId="i=85">
@@ -133,7 +134,7 @@
       <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2001</Reference>
     </References>
   </UAMethod>
-  <UAVariable NodeId="ns=1;i=2012" BrowseName="1:Version_Information" ParentNodeId="ns=1;i=2002" DataType="Double">
+  <UAVariable NodeId="ns=1;i=2012" BrowseName="1:Version_Information" ParentNodeId="ns=1;i=2002" DataType="String">
     <DisplayName>Version_Information</DisplayName>
     <Description>Version_Information</Description>
     <References>
@@ -141,7 +142,7 @@
       <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
     </References>
     <Value>
-      <uax:Double>22</uax:Double>
+      <uax:String>"no information"</uax:String>
     </Value>
   </UAVariable>
   <UAVariable NodeId="ns=1;i=2013" BrowseName="1:Server_Information" ParentNodeId="ns=1;i=2002" DataType="String">
@@ -242,6 +243,17 @@
     </References>
     <Value>
       <uax:String>"no state"</uax:String>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;i=3000" BrowseName="1:Printer_Temperature" ParentNodeId="ns=1;i=2006" DataType="String">
+    <DisplayName>Printer_Temperature</DisplayName>
+    <Description>Printer_Temperature</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2006</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no temp"</uax:String>
     </Value>
   </UAVariable>
   <UAObject NodeId="ns=1;i=2026" BrowseName="1:Printer_Head" ParentNodeId="ns=1;i=2006">

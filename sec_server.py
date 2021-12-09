@@ -2,7 +2,7 @@ import asyncio
 
 import time
 from opcua.crypto import security_policies
-from opcua.ua.uaprotocol_auto import UserNameIdentityToken 
+from opcua.ua.uaprotocol_auto import UserNameIdentityToken
 import requests
 from threading import Thread
 from opcua.server.user_manager import UserManager
@@ -27,27 +27,27 @@ async def var_update(var, requestString):
 
 #class VarUpdater(Thread):
 #    def __init__(self, var, requestString):
-#       	Thread.__init__(self)
-#       	self._stopev = False
-#       	self.var = var
-#       	self.requestString = requestString
+#               Thread.__init__(self)
+#               self._stopev = False
+#               self.var = var
+#               self.requestString = requestString
 
 #    def stop(self):
-#       	self._stopev = True
+#               self._stopev = True
 
 #    async def run(self):
-#       	while not self._stopev:
+#               while not self._stopev:
 #           headers = {'X-Api-Key' : api_key}
 #           http_get_result = requests.get(self.requestString, headers=headers)
-#           if http_get_result.status_code == 200:   
-#               await self.var.set_value(http_get_result.text) 
+#           if http_get_result.status_code == 200:
+#               await self.var.set_value(http_get_result.text)
 #           time.sleep(15)
 
 
 @uamethod
 def test(parent):
     print('hallo das ist ein test')
-   
+
 
 model_filepath = 'opcuaServer.xml'
 
@@ -68,7 +68,7 @@ async def main():
                 ], permission_ruleset = SimpleRoleRuleset())
 
 
-    await server.load_private_key('certs/key.pem')   
+    await server.load_private_key('certs/key.pem')
     await server.load_certificate('certs/certificate.pem')
 
     await server.import_xml(model_filepath)
@@ -83,7 +83,7 @@ async def main():
     printerOperations = await nodes.get_child('1:Printer_Operations')
     serverAndVersionInfo = await nodes.get_child('1:Server_Information')
 
-   
+
 
     ##################################################Funktionen initialisieren
     addUser = await accessControl.get_child('1:addUser')
@@ -93,7 +93,7 @@ async def main():
 
     connect = await connectionHandling.get_child('1:connection_request')
     disconnect = await connectionHandling.get_child('1:disconnection_request')
-    server.link_method(connect, con)           
+    server.link_method(connect, con)
     server.link_method(disconnect, discon)
 
     logIn = await generalInfos.get_child('1:log_in')
@@ -129,20 +129,23 @@ async def main():
     allFiles = await fileOperations.get_child('1:All_Files')
     currentUser = await generalInfos.get_child('1:currentuser')
     printerState = await printerOperations.get_child('1:Printer_State')
+    printerTemperature = await printerOperations.get_child('1:Printer_Temperature')
     serverInfos = await serverAndVersionInfo.get_child('1:Server_Information')
     versionInfos = await serverAndVersionInfo.get_child('1:Version_Information')
 
-    await connectionSettings.set_value('uninitialized')
+    await connectionSettings.set_value('empty')
     await connectionSettings.set_read_only()
-    await allFiles.set_value('uninitialized')
+    await allFiles.set_value('empty')
     await allFiles.set_read_only()
-    await currentUser.set_value('uninitialized')
+    await currentUser.set_value('empty')
     await currentUser.set_read_only()
-    await printerState.set_value('uninitialized')
+    await printerState.set_value('empty')
     await printerState.set_read_only()
-    await serverInfos.set_value('uninitialized')
+    await serverInfos.set_value('empty')
+    await printerTemperature.set_value('empty')
+    await printerTemperature.set_read_only()
     await serverInfos.set_read_only()
-    await versionInfos.set_value(1998.0)
+    await versionInfos.set_value('empty')
     await versionInfos.set_read_only()
 
     ##################################################werte initialisieren ende
@@ -151,7 +154,7 @@ async def main():
    # vup1 = VarUpdater(connectionSettings, 'http://localhost:5000/api/connection')
    # vup2 = VarUpdater(allFiles, 'http://localhost:5000/api/files')
    # vup3 = VarUpdater(currentUser, 'http://localhost:5000/api/currentuser')
-   # vup4 = VarUpdater(printerState, 'http://localhost:5000/api/printer?history=false')
+   # vup4 = VarUpdater(printerState, 'http://localhost:5000/api/printer?exclude=temperature,sd')
    # vup5 = VarUpdater(serverInfos, 'http://localhost:5000/api/server')
    # vup6 = VarUpdater(versionInfos, 'http://localhost:5000/api/version')
 
@@ -166,8 +169,8 @@ async def main():
         print('server start')
         while True:
             await asyncio.sleep(30)
-#            await var_update(printerState, 'http://localhost:5000/api/printer?history=false')
-            await var_update(currentUser, 'http://localhost:5000/api/currentuser')
+            await var_update(serverInfos, 'http://localhost:5000/api/server')
+            await var_update(versionInfos, 'http://localhost:5000/api/version')
 
 
 
