@@ -7,7 +7,7 @@ from azure.storage.blob import ContainerClient, BlobClient
 import ast
 import requests
 
-conString = "DefaultEndpointsProtocol=https;AccountName=storageglpdei;AccountKey=O1V1O63Q7pvLdwVZj/G6JfI27+ANCfFO2/KHT4wPCzoVUoPIy+xYu3fvuPQ919O2oYFZgFK4qgXrzIeFqJTViw==;EndpointSuffix=core.windows.net"
+conString = ""
 node_token2012 = 'YgtvyoSUCyXR0pKDCcDb'
 node_token2013 = 'X2G5VfcocMKXgns5G8hc'
 node_token2017 = 'IwSESR3zjOj3181v3JpN'
