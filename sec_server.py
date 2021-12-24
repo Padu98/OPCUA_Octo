@@ -21,27 +21,15 @@ async def var_update(var, requestString):
     http_get_result = requests.get(requestString, headers=headers)
     if http_get_result.status_code == 200:
         await var.set_value(http_get_result.text)
-        print(http_get_result)
+ #       vals = await var.get_value()
+#        print(vals)
+    print(http_get_result)
 
+async def var_update2(var):
+    oldval = await var.get_value()
+    newval = oldval + '1'
+    await var.set_value(newval)
 
-
-#class VarUpdater(Thread):
-#    def __init__(self, var, requestString):
-#               Thread.__init__(self)
-#               self._stopev = False
-#               self.var = var
-#               self.requestString = requestString
-
-#    def stop(self):
-#               self._stopev = True
-
-#    async def run(self):
-#               while not self._stopev:
-#           headers = {'X-Api-Key' : api_key}
-#           http_get_result = requests.get(self.requestString, headers=headers)
-#           if http_get_result.status_code == 200:
-#               await self.var.set_value(http_get_result.text)
-#           time.sleep(15)
 
 
 @uamethod
@@ -56,6 +44,9 @@ async def main():
     cert_user_manager = CertificateUserManager()
     await cert_user_manager.add_user('certs/client_certificate.pem', name='test_user')
     await cert_user_manager.add_user('certs/opcua_publisher_certificate.der', name='publisher')
+    await cert_user_manager.add_user('certs/iiotcerts/8C7A.der', name='iiotuser1')
+    await cert_user_manager.add_user('certs/iiotcerts/909B.der', name='iiotuser2')
+    await cert_user_manager.add_user('certs/iiotcerts/mount_F7C0E.der', name='opc_publisher')
 
     server = Server(user_manager = cert_user_manager)
     await server.init()
@@ -88,8 +79,11 @@ async def main():
     ##################################################Funktionen initialisieren
     addUser = await accessControl.get_child('1:addUser')
     deleteUser = await accessControl.get_child('1:deleteUser')
-    server.link_method(addUser, test)  ##fehlt
+    server.link_method(addUser, add_user)
     server.link_method(deleteUser, del_user)
+
+    selectFile = await fileOperations.get_child('1:select_file')
+    server.link_method(selectFile, select_file)
 
     connect = await connectionHandling.get_child('1:connection_request')
     disconnect = await connectionHandling.get_child('1:disconnection_request')
@@ -132,6 +126,7 @@ async def main():
     printerTemperature = await printerOperations.get_child('1:Printer_Temperature')
     serverInfos = await serverAndVersionInfo.get_child('1:Server_Information')
     versionInfos = await serverAndVersionInfo.get_child('1:Version_Information')
+    jobInfos = await JobOperations.get_child('1:Job_Information')
 
     await connectionSettings.set_value('empty')
     await connectionSettings.set_read_only()
@@ -147,6 +142,8 @@ async def main():
     await serverInfos.set_read_only()
     await versionInfos.set_value('empty')
     await versionInfos.set_read_only()
+    await jobInfos.set_value('empty')
+    await jobInfos.set_read_only()
 
     ##################################################werte initialisieren ende
 
@@ -171,6 +168,8 @@ async def main():
             await asyncio.sleep(30)
             await var_update(serverInfos, 'http://localhost:5000/api/server')
             await var_update(versionInfos, 'http://localhost:5000/api/version')
+            await var_update(jobInfos, 'http://localhost:5000/api/job')
+          #  await var_update2(jobInfos)
 
 
 

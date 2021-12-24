@@ -42,6 +42,7 @@
       <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
       <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2017</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2050</Reference>
     </References>
   </UAObject>
   <UAObject NodeId="ns=1;i=2005" BrowseName="1:Job_Operations" ParentNodeId="i=85">
@@ -53,6 +54,7 @@
       <Reference ReferenceType="HasComponent">ns=1;i=2019</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2020</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2021</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=2022</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2023</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=2024</Reference>
     </References>
@@ -192,6 +194,13 @@
       <uax:String>Null</uax:String>
     </Value>
   </UAVariable>
+  <UAMethod NodeId="ns=1;i=2050" BrowseName="1:select_file" ParentNodeId="ns=1;i=2004">
+    <DisplayName>select_file</DisplayName>
+    <Description>select_file</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2004</Reference>
+    </References>
+  </UAMethod>
   <UAMethod NodeId="ns=1;i=2018" BrowseName="1:start" ParentNodeId="ns=1;i=2005">
     <DisplayName>start</DisplayName>
     <Description>start</Description>
@@ -234,6 +243,17 @@
       <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
     </References>
   </UAMethod>
+  <UAVariable NodeId="ns=1;i=2022" BrowseName="1:Job_Information" ParentNodeId="ns=1;i=2005" DataType="String">
+    <DisplayName>Job_Information</DisplayName>
+    <Description>Job_Information</Description>
+    <References>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2005</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+    </References>
+    <Value>
+      <uax:String>"no information"</uax:String>
+    </Value>
+  </UAVariable>
   <UAVariable NodeId="ns=1;i=2025" BrowseName="1:Printer_State" ParentNodeId="ns=1;i=2006" DataType="String">
     <DisplayName>Printer_State</DisplayName>
     <Description>Printer_State</Description>
