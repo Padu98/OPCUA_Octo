@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Text;
 
 
 namespace ASAEdgeOPCUA
 {
     public class Class1
     {
-        public static Dictionary<String, object> []GetValue(Dictionary<String, object> payload)
+        public static Dictionary<String, object>[] GetValue(Dictionary<String, object> payload)
         {
             Dictionary<string, object>[] array = new Dictionary<string, object>[payload.Values.Count];  //result array
 
@@ -20,7 +21,7 @@ namespace ASAEdgeOPCUA
                 Dictionary<string, object> val = (Dictionary<string, object>)payload.Values.ElementAt(i); //davor 0
                 result.Add("TimeStamp", (string)val["SourceTimestamp"]);
 
-                Dictionary<string, object> restResult = new Dictionary<string, object>(); 
+                Dictionary<string, object> restResult = new Dictionary<string, object>();
                 String nodeId = payload.Keys.ElementAt(i);
 
                 if ((string)val["Value"] == "empty")
@@ -28,7 +29,7 @@ namespace ASAEdgeOPCUA
                     restResult.Add("status", "empty");
                     restResult.Add("NodeId", nodeId);
                     result.Add("restResult", restResult);
-                         
+
                 }
                 else if (nodeId.Contains("i=2013"))
                 {
@@ -65,75 +66,92 @@ namespace ASAEdgeOPCUA
                     result.Add("restResult", restResult); ;
 
 
-                }/*
-           else if (nodeId.Contains("i=2017"))
-            {
-                string json = (string)val["Value"];
-                List<string> keyvalues = findValueList(json, "name");
-                restResult.Add("ns=1;i=2017", "File Information");
-
-                for (int i = 0; i < keyvalues.Count; i++)
-                {
-                    restResult.Add("File_" + (i+1).ToString(), keyvalues.ElementAt(i));
                 }
-                restResult.Add("status", "parsed");
-                result.Add("restResult", restResult);
-            }
-            else if (nodeId.Contains("i=2025"))
-            {
-                using (Stream stream = GenertateStream((string)val["Value"]))
+                else if (nodeId.Contains("i=2017"))
                 {
-                    var serializer = new DataContractJsonSerializer(typeof(payloadi2025));
-                    payloadi2025 parsedPayload = (payloadi2025)serializer.ReadObject(stream);
-
-                    Dictionary<string, object> flags = new Dictionary<string, object>();
-                    flags.Add("operational", parsedPayload.flags.operational);
-                    flags.Add("paused", parsedPayload.flags.paused);
-                    flags.Add("printing", parsedPayload.flags.printing);
-                    flags.Add("cancelling", parsedPayload.flags.cancelling);
-                    flags.Add("pausing", parsedPayload.flags.pausing);
-                    flags.Add("sdReady", parsedPayload.flags.sdReady);
-                    flags.Add("error", parsedPayload.flags.error);
-                    flags.Add("ready", parsedPayload.flags.ready);
-                    flags.Add("closedOrError", parsedPayload.flags.closedOrError);
-
-                    restResult.Add("ns=1;i=2012", "Version information");
-                    restResult.Add("flags", flags);
+                    string json = (string)val["Value"];
+                    List<string> keyvalues = findValueList(json, "name");
+                    restResult.Add("ns=1;i=2017", "File Information");
+                    for (int j = 0; j < keyvalues.Count; j++)
+                    {
+                        restResult.Add("File_" + (j+1).ToString(), keyvalues.ElementAt(j));
+                    }
                     restResult.Add("status", "parsed");
+                    result.Add("restResult", restResult);
                 }
-                result.Add("restResult", restResult);
-            }
-            else if (nodeId.Contains("i=232132123"))
-            {
-                string json = (string)val["Value"];
-                string tool = "tool";
-             
-                List<string> actualList = findValueList(json, "actual");
-                List<string> targetList = findValueList(json, "target");
-                List<string> offsetList = findValueList(json, "offset");
-
-                Dictionary<string, object> tools;
-                for (int i = 0; i < actualList.Count -1; i++)
+                else if (nodeId.Contains("i=2025"))
                 {
-                    tools = new Dictionary<string, object>();
-                    tools.Add("actual", actualList.ElementAt(i));
-                    tools.Add("target", targetList.ElementAt(i));
-                    tools.Add("offset", offsetList.ElementAt(i));
-                    restResult.Add(tool + i.ToString(), tools);
+                    using (Stream stream = GenerateStream((string)val["Value"]))
+                    {
+                        var serializer = new DataContractJsonSerializer(typeof(payloadi2025));
+                        payloadi2025 parsedPayload = (payloadi2025)serializer.ReadObject(stream);
+                        Dictionary<string, object> flags = new Dictionary<string, object>();
+                        flags.Add("operational", parsedPayload.flags.operational);
+                        flags.Add("paused", parsedPayload.flags.paused);
+                        flags.Add("printing", parsedPayload.flags.printing);
+                        flags.Add("cancelling", parsedPayload.flags.cancelling);
+                        flags.Add("pausing", parsedPayload.flags.pausing);
+                        flags.Add("sdReady", parsedPayload.flags.sdReady);
+                        flags.Add("error", parsedPayload.flags.error);
+                        flags.Add("ready", parsedPayload.flags.ready);
+                        flags.Add("closedOrError", parsedPayload.flags.closedOrError);
+                        restResult.Add("ns=1;i=2025", "PrinterState");
+                        restResult.Add("flags", flags);
+                        restResult.Add("status", "parsed");
+                    }
+                    result.Add("restResult", restResult);
                 }
+                else if (nodeId.Contains("i=3000"))
+                {
+                    string json = (string)val["Value"];
+                    string tool = "tool";
+             
+                    List<string> actualList = findValueList(json, "actual");
+                    List<string> targetList = findValueList(json, "target");
+                    List<string> offsetList = findValueList(json, "offset");
+                    Dictionary<string, object> tools;
+                    for (int j = 0; j < actualList.Count -1; j++)
+                    {
+                        tools = new Dictionary<string, object>();
+                        if (actualList.Count > j) { tools.Add("actual", actualList.ElementAt(j)); }
+                        if (targetList.Count > j) { tools.Add("target", targetList.ElementAt(j)); }
+                        if (offsetList.Count > j) { tools.Add("offset", offsetList.ElementAt(j)); }
+                        restResult.Add(tool + j.ToString(), tools);
+                    }
+                    tools = new Dictionary<string, object>();
+                    if (actualList.Count>0) { tools.Add("actual", actualList.ElementAt(actualList.Count - 1)); }
+                    if (targetList.Count > 0) { tools.Add("target", targetList.ElementAt(actualList.Count - 1)); }
+                    if (offsetList.Count > 0) { tools.Add("offset", offsetList.ElementAt(actualList.Count - 1)); }  //should be bed
+                    restResult.Add("bed", tools);
+                    result.Add("restResult", restResult);
+                    
+                }
+                else if (nodeId.Contains("i=2022"))
+                {
+                    string json = (string)val["Value"];
+                    List<string> nameList = findValueList(json, "name");
+                    List<string> sizeList = findValueList(json, "size");
+                    List<string> printTimeList = findValueList(json, "printTime");
+                    List<string> printTimeleftlList = findValueList(json, "printTimeLeft");
+                    List<string> stateList = findValueList(json, "state");
 
-                tools = new Dictionary<string, object>();
-                tools.Add("actual", actualList.ElementAt(actualList.Count-1));
-                tools.Add("target", targetList.ElementAt(actualList.Count-1));
-                tools.Add("offset", offsetList.ElementAt(actualList.Count-1));
-                restResult.Add("bed", json.ToString());
+                    restResult.Add("ns=1;i=2022", "Current Job");
 
-               result.Add("restResult", restResult);
-            }*/
+                    if(nameList.Count > 0) { restResult.Add("name", nameList.ElementAt(0)); }
+                    if(sizeList.Count > 0) { restResult.Add("size", sizeList.ElementAt(0)); }
+                    if(printTimeList.Count > 0) { restResult.Add("printTime", printTimeList.ElementAt(0)); }
+                    if(printTimeleftlList.Count > 0) { restResult.Add("printTimeLeft", printTimeleftlList.ElementAt(0)); }
+                    if(stateList.Count > 0) { restResult.Add("state", stateList.ElementAt(0)); }
+
+                    restResult.Add("status", "parsed");
+                    result.Add("restResult", restResult);
+
+
+                }
                 else
                 {
                     result.Add("status", "node could no be parsed");
-                   // return result;
+                    // return result;
                 }
                 array[i] = result;
             }
@@ -160,17 +178,25 @@ namespace ASAEdgeOPCUA
             return stream;
         }
 
-        /*  public static List<String> findValueList(string json, string key)
+          public static List<String> findValueList(string json, string key)
           {
-              StringBuilder sb = new StringBuilder("", 50);
-              int position = 1;
+            StringBuilder sb = new StringBuilder("", 50);
+            int position = 1;
 
-              List<String> result = new List<String>();
-              string cleanjson = json.Trim(new Char[] { '"', '\'' });
+            List<String> result = new List<String>();
 
-              while (position > 0)
+            string cleanjson = json.Replace("\"", "");
+            string newkey = key+":";
+
+            while (position > 0)
               {
-                  position = cleanjson.LastIndexOf(key + ":") + 1;
+                position = cleanjson.IndexOf(newkey);
+                if(position != -1) { 
+                    position+=newkey.Length;
+                    StringBuilder newsb = new StringBuilder(cleanjson);
+                    newsb[position-1] = '!'; // change : to !
+                    cleanjson = newsb.ToString();
+                } 
                   if (position > 0)
                   {
                       char nextChar = cleanjson[position];
@@ -183,10 +209,11 @@ namespace ASAEdgeOPCUA
                       result.Add(sb.ToString());
                       cleanjson.Remove(position - 1); //change key
                       sb = new StringBuilder("", 50);
+
                   }
               }
               return result;
-          }*/
+          }
     }
 
     [DataContract]
@@ -215,7 +242,7 @@ namespace ASAEdgeOPCUA
     }
 
     [DataContract]
-    class flags 
+    class flags
     {
         [DataMember(Name = "operational")] public bool operational { get; set; }
         [DataMember(Name = "paused")] public bool paused { get; set; }
@@ -229,4 +256,3 @@ namespace ASAEdgeOPCUA
 
     }
 }
-
