@@ -1,0 +1,15 @@
+FROM arm32v7/python:3.9-alpine
+
+WORKDIR /app 
+
+
+RUN pip install --upgrade pip
+RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo
+RUN pip install asyncua
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+
+COPY . .
+
+CMD [ "python3", "-u", "./main.py" ]

@@ -1,5 +1,4 @@
 import asyncio
-
 import time
 from opcua.crypto import security_policies
 from opcua.ua.uaprotocol_auto import UserNameIdentityToken
@@ -7,6 +6,7 @@ import requests
 from threading import Thread
 from opcua.server.user_manager import UserManager
 from ua_methods import *
+from permission_ruleset import MyRoleRuleset
 
 from asyncua import ua, uamethod, Server
 from asyncua.crypto.permission_rules import SimpleRoleRuleset
@@ -29,8 +29,6 @@ async def var_update2(var):
     oldval = await var.get_value()
     newval = oldval + '1'
     await var.set_value(newval)
-
-
 
 @uamethod
 def test(parent):
@@ -56,8 +54,7 @@ async def main():
 
     server.set_security_policy([
                 ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
-                ], permission_ruleset = SimpleRoleRuleset())
-
+                ], permission_ruleset = MyRoleRuleset())
 
     await server.load_private_key('certs/key.pem')
     await server.load_certificate('certs/certificate.pem')
@@ -120,30 +117,25 @@ async def main():
     ##################################################werte initialisieren
 
     connectionSettings = await connectionHandling.get_child('1:Settings')
+    await connectionSettings.set_writable()
     allFiles = await fileOperations.get_child('1:All_Files')
     currentUser = await generalInfos.get_child('1:currentuser')
     printerState = await printerOperations.get_child('1:Printer_State')
     printerTemperature = await printerOperations.get_child('1:Printer_Temperature')
     serverInfos = await serverAndVersionInfo.get_child('1:Server_Information')
+    await serverInfos.set_writable()
     versionInfos = await serverAndVersionInfo.get_child('1:Version_Information')
+    await versionInfos.set_writable()
     jobInfos = await JobOperations.get_child('1:Job_Information')
 
     await connectionSettings.set_value('empty')
-    await connectionSettings.set_read_only()
     await allFiles.set_value('empty')
-    await allFiles.set_read_only()
     await currentUser.set_value('empty')
-    await currentUser.set_read_only()
     await printerState.set_value('empty')
-    await printerState.set_read_only()
     await serverInfos.set_value('empty')
     await printerTemperature.set_value('empty')
-    await printerTemperature.set_read_only()
-    await serverInfos.set_read_only()
     await versionInfos.set_value('empty')
-    await versionInfos.set_read_only()
     await jobInfos.set_value('empty')
-    await jobInfos.set_read_only()
 
     ##################################################werte initialisieren ende
 
@@ -165,7 +157,7 @@ async def main():
     async with server:
         print('server start')
         while True:
-            await asyncio.sleep(30)
+            await asyncio.sleep(20)
             await var_update(serverInfos, 'http://localhost:5000/api/server')
             await var_update(versionInfos, 'http://localhost:5000/api/version')
             await var_update(jobInfos, 'http://localhost:5000/api/job')
