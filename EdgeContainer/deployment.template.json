@@ -21,9 +21,14 @@
         "systemModules": {
           "edgeAgent": {
             "type": "docker",
+            "env": {
+              "storageFolder": {
+                  "value": "/certs"
+              }
+          },
             "settings": {
               "image": "mcr.microsoft.com/azureiotedge-agent:1.2",
-              "createOptions": {}
+              "createOptions": { }
             }
           },
           "edgeHub": {
@@ -58,8 +63,13 @@
         },
         "modules": {
           "opcmodul": {
-            "version": "1.0",
+            "version": "1.4",
             "type": "docker",
+            "env": {
+              "storageFolder": {
+                  "value": "/EdgeCerts"
+              }
+          }, 
             "status": "running",
             "restartPolicy": "always",
             "settings": {
@@ -67,11 +77,21 @@
               "createOptions": {
 
                 "HostConfig": {
-                  "Binds":["/home/pi/OPCUA_Octo/certs:/certs"],
+                  "Binds":["/c/EdgeCerts:/EdgeCerts"],
                   "PortBindings":{"5671/tcp":[{"HostPort":"5671"}],"8883/tcp":[{"HostPort":"8883"}],"443/tcp":[{"HostPort":"443"}]}}
               }
             }
-          }
+          },
+          "publisher": {
+            "settings": {
+                "image": "mcr.microsoft.com/iotedge/opc-publisher:2.7.206",
+                "createOptions": "{\"Hostname\":\"OPCPublisher\",\"Cmd\":[\"PkiRootPath=/appdata/pki\",\"--lf=/appdata/publisher.log\",\"--pf=/appdata/publishednodes.json\",\"--aa\",\"--di=60\",\"--me=Json\",\"--mm=PubSub\"],\"HostConfig\":{\"Binds\":[\"/c/IoTEdgeMapping:/appdata\"]}}"
+            },
+            "type": "docker",
+            "version": "1.0",
+            "status": "running",
+            "restartPolicy": "always"
+        }
         }
       }
     },
@@ -79,7 +99,10 @@
       "properties.desired": {
         "schemaVersion": "1.1",
         "routes": {
-          "opcmodulToIoTHub": "FROM /messages/modules/opcmodul/outputs/* INTO $upstream"
+          "opcmodulToIoTHub": "FROM /messages/modules/opcmodul/outputs/* INTO $upstream",
+          "EdgejobToUpstream": "FROM /messages/modules/edgeJob/* INTO $upstream",
+          "leafToUpstream": "FROM /messages/* WHERE NOT IS_DEFINED($connectionModuleId) INTO $upstream",
+          "publisherToUpstream": "FROM /messages/modules/publisher/* INTO BrokeredEndpoint(\"/modules/edgeJob/inputs/EdgeInput\")"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

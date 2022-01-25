@@ -9,18 +9,18 @@
   "CompatibilityLevel": "1.2",
   "UseSystemAssignedIdentity": false,
   "GlobalStorage": {
-    "AccountName": "storage533vpf",
+    "AccountName": "confacaccount",
     "AccountKey": null,
     "AuthenticationMode": "ConnectionString"
   },
   "CustomCodeStorage": {
-    "AccountName": "storage533vpf",
+    "AccountName": "confacaccount",
     "AccountKey": null,
-    "ContainerName": "edgejob1",
+    "ContainerName": "edgejob",
     "Path": "UserCustomCode.zip"
   },
   "ContentStoragePolicy": "SystemAccount",
   "UploadFromLocal": true,
-  "DataSourceCredentialDomain": "4ab86969-e1f7-4c70-9b31-51fa15ce6934.StreamAnalystics",
+  "DataSourceCredentialDomain": "33caf4b1-8b45-4bf6-806b-9e80550df273.StreamAnalystics",
   "Tags": {}
 }
