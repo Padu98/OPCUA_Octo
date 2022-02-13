@@ -27,24 +27,24 @@ model_filepath = 'opcuaServer.xml'
 
 class OPC_Server:
 
-    async def __init__(self):
+    async def init(self):
         cert_user_manager = CertificateUserManager()
         await cert_user_manager.add_user('certs/client_certificate.pem', name='test_user')
-        await cert_user_manager.add_user('certs/opcua_publisher_certificate.der', name='publisher')
-        await cert_user_manager.add_user('certs/iiotcerts/8C7A.der', name='iiotuser1')
-        await cert_user_manager.add_user('certs/iiotcerts/909B.der', name='iiotuser2')
-        await cert_user_manager.add_user('certs/iiotcerts/mount_F7C0E.der', name='opc_publisher')
+#        await cert_user_manager.add_user('certs/opcua_publisher_certificate.der', name='publisher')
+   #     await cert_user_manager.add_user('certs/iiotcerts/8C7A.der', name='iiotuser1')
+  #      await cert_user_manager.add_user('certs/iiotcerts/909B.der', name='iiotuser2')
+ #       await cert_user_manager.add_user('certs/iiotcerts/mount_F7C0E.der', name='opc_publisher')
 
         self.server = Server(user_manager = cert_user_manager)
         await self.server.init()
 
-        self.init_server()
-        self.set_security()
-        self.initialize_methods()
-        self.initialize_nodes()
-        
+        await self.init_server()
+        await self.set_security()
+        await self.initialize_methods()
+        await self.initialize_nodes()
 
-    async def set_security(self):            
+
+    async def set_security(self):
         self.server.set_security_policy([
             ua.SecurityPolicyType.Basic256Sha256_SignAndEncrypt,
               ], permission_ruleset = MyRoleRuleset())
@@ -105,7 +105,7 @@ class OPC_Server:
         serverAndVersionInfo = await self.nodes.get_child('1:Server_Information')
 
         get_val = await serverAndVersionInfo.get_child('1:get_val')
-        self.server.link_method(get_val, getVal)
+#        self.server.link_method(get_val, getVal)
 
         addUser = await accessControl.get_child('1:addUser')
         deleteUser = await accessControl.get_child('1:deleteUser')
@@ -156,6 +156,11 @@ class OPC_Server:
         print("get_val")
         return [ua.Variant(val, ua.VariantType.String)]
 
+
+async def function() -> asyncio.coroutine:
+     opc_server = OPC_Server()
+     await opc_server.init()
+
+
 if __name__ == '__main__':
-    asyncio.run(opc_server = OPC_Server())
-    
+    asyncio.run(function())
