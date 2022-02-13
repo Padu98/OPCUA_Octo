@@ -5,10 +5,10 @@ from pip import main
 from azure.iot.hub import IoTHubRegistryManager
 from azure.iot.hub.models import CloudToDeviceMethod, CloudToDeviceMethodResult, Twin
 
-ApplicationKeys = {"0212974DC0324BC6A437ACD87FDB772B"}
-iothub_connection_str = "HostName=conFa-hub.azure-devices.net;SharedAccessKeyName=service;SharedAccessKey=gQ5uwKeRCbU37S/AooNz0EICwauXsv0mePDb9SHBVbQ="
+ApplicationKeys = {""}
+iothub_connection_str = ""
 notvalid = True
-device_id = "test/modules/opcmodul"
+device_id = "opc-device/modules/opcmodul"
 method_name1 = "uploadFile"
 method_name2 = "selectFile"
 method_name31 = "startJob"
@@ -32,12 +32,13 @@ def main(key):
     if(str(inputString)=="1"):
         os.system('cls' if os.name == 'nt' else 'clear')
         print("To Upload a File you need to provide the following Information: \n")
+        print("Beispieldatei: https://raw.githubusercontent.com/Padu98/OPCUA_Octo/main/gcode/samsung_case.gcode \n")
         url = input("url: ")
-        print("\n")
-        filename = input("filename:")
+#        print("\n")
+#        filename = input("filename:")
         print("\n")
         try:
-            payload = {"key":key, "url":url, "filename":filename}
+            payload = {"key":key, "url":url, "filename":"ba_neu"}
             registry_manager = IoTHubRegistryManager(iothub_connection_str)
             deviceMethod = CloudToDeviceMethod(method_name="uploadFile", payload=payload)
             response = registry_manager.invoke_device_method(device_id, deviceMethod)
@@ -46,7 +47,7 @@ def main(key):
             print("\n")
         except Exception as e:
             print("Unexprected error {0}".format(e))
-            
+
     elif(str(inputString)=="2"):
         os.system('cls' if os.name == 'nt' else 'clear')
         print("To select a file yout nee to provide the following information: \n")
@@ -178,7 +179,7 @@ def main(key):
 
 if __name__=="__main__":
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("starting the opc-console. To continue you need a valid octoprint applicaion-key.")
+    print("starting the opc-console. To continue you need a valid octoprint API-key.")
     inputKey = ""
     while(notvalid):
         inputKey = input("Enter your key: ")
@@ -186,7 +187,7 @@ if __name__=="__main__":
             print("the key is not valid. try again!")
         else:
             notvalid = False
-    
+
     print("key validation was successfully. \n")
     print("the following methods are implemented: \n")
     while True:
